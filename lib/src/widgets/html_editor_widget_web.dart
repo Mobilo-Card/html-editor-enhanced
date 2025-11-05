@@ -207,8 +207,18 @@ class _HtmlEditorWidgetWebState extends State<HtmlEditorWidget> {
     }
     var summernoteScripts = """
       <script type="text/javascript">
-        \$(document).ready(function () {
-          \$('#summernote-2').summernote({
+      var __snInited = false;
+      setTimeout(function init() {
+        if (!window.jQuery || !jQuery.fn || !jQuery.fn.summernote) {
+          // Retry every 500ms until Summernote is actually there
+          return setTimeout(init, 500);
+        }
+
+        if (__snInited) return;
+        __snInited = true;
+
+        jQuery(function ($) {
+          $('#summernote-2').summernote({
             placeholder: "${widget.htmlEditorOptions.hint}",
             tabsize: 2,
             height: ${widget.otherOptions.height},
@@ -218,11 +228,11 @@ class _HtmlEditorWidgetWebState extends State<HtmlEditorWidget> {
             ${widget.htmlEditorOptions.customOptions}
             $summernoteCallbacks
           });
-          
           \$('#summernote-2').on('summernote.change', function(_, contents, \$editable) {
             window.parent.postMessage(JSON.stringify({"view": "$createdViewId", "type": "toDart: onChangeContent", "contents": contents}), "*");
           });
         });
+      }, 2000);
        
         window.parent.addEventListener('message', handleMessage, false);
         document.onselectionchange = onSelectionChange;
