@@ -217,8 +217,8 @@ class _HtmlEditorWidgetWebState extends State<HtmlEditorWidget> {
         if (__snInited) return;
         __snInited = true;
 
-        jQuery(function ($) {
-          $('#summernote-2').summernote({
+        jQuery(function (\$) {
+          \$('#summernote-2').summernote({
             placeholder: "${widget.htmlEditorOptions.hint}",
             tabsize: 2,
             height: ${widget.otherOptions.height},
