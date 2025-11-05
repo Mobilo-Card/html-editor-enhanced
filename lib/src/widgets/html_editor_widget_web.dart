@@ -232,11 +232,10 @@ class _HtmlEditorWidgetWebState extends State<HtmlEditorWidget> {
             window.parent.postMessage(JSON.stringify({"view": "$createdViewId", "type": "toDart: onChangeContent", "contents": contents}), "*");
           });
         });
-      }, 2000);
-       
         window.parent.addEventListener('message', handleMessage, false);
         document.onselectionchange = onSelectionChange;
         console.log('done');
+      }, 2000);
       
         function handleMessage(e) {
           if (e && e.data && e.data.includes("toIframe:")) {
